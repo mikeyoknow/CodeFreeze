@@ -3,3 +3,61 @@ Web-based diary - css
 EECS1012 - PROJECT
 Authors: CodeFreeze(Erfan, Idil, William and Marwa)
 */
+
+#name{
+    text-align: left;
+    color: black;
+    padding-left: 10px;
+}
+#date{
+    color: black;
+    padding-left: 10px;
+}
+.header{
+    border: 3px solid black;
+    background-color: white;
+    font-family: 'Schoolbell', arial, serif;
+}
+.buttons{
+    border: 3px solid black;
+    text-align: center;
+    padding: 10px;
+}
+#save{
+    font-family: 'Schoolbell', arial, serif;
+    font-size: 25px;
+    background-color: pink;
+}
+#lock{
+    font-family: 'Schoolbell', arial, serif;
+    font-size: 25px;
+    background-color: pink;
+}
+#img{
+    font-family: 'Schoolbell', arial, serif;
+    font-size: 25px;
+    background-color: pink;
+}
+#NightMode{
+    font-family: 'Schoolbell', arial, serif;
+    font-size: 25px;
+    background-color: pink;
+}
+
+#passage{
+    width: 100%;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    font-family: 'Schoolbell', arial, serif;
+}
+#starter{
+    font-family: 'Schoolbell', arial, serif;
+    font-size: 25px;
+}
+#add{
+    background-color: aliceblue;
+    font-family: 'Schoolbell', arial, serif;
+    font-size: 20px;
+}
+    

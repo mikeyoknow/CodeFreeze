@@ -12,9 +12,39 @@ Authors: CodeFreeze(Erfan, Idil, William and Marwa)
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CodeFreezeDiary</title>
     <link rel="stylesheet" type="text/css" href="codefreeze.css" title="style" />
+    <link href = "https://fonts.googleapis.com/css?family=Schoolbell&v1" rel="stylesheet">
     <script src="codefreeze.js"></script>
 </head>
-<body>
-    HI IM TESTING
+<body onload="nameCatcher()">
+    <div class="header">
+        <h1 id="name"></h1>
+        <h3 id="date" style="text-align:left;"></h3>
+        
+        <script>
+            n =  new Date();
+            y = n.getFullYear();
+            m = n.getMonth() + 1;
+            d = n.getDate();
+            document.getElementById("date").innerHTML = m + "/" + d + "/" + y;
+
+
+        </script>
+        
+    </div>
+    &nbsp; <!--Adds space in between the two div-->
+    <div class="buttons">
+        <button id="save"      onclick="" onmouseover="on1()" onmouseout="out1()">SAVE</button>
+        <button id="lock"      onclick="" onmouseover="on2()" onmouseout="out2()">LOCK</button>
+        <button id="img"       onclick="" onmouseover="on3()" onmouseout="out3()">IMG</button>
+        <button id="NightMode" onclick="" onmouseover="on4()" onmouseout="out4()">NIGHT MODE</button>
+    </div>
+    &nbsp; <!--Adds space in between the two div-->
+    <div class="entery">
+        <label for="prompt"> <p id="starter">Write me about your day:</p> </label>
+        <br>
+        <textarea id="passage" name="form" rows="4" cols="50">
+        </textarea>
+        <button id="add" onclick="" onmouseover="on5()" onmouseout="out5()">ADD</button>
+    </div>
 </body>
 </html>
