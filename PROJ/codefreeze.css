@@ -15,35 +15,15 @@ Authors: CodeFreeze(Erfan, Idil, William and Marwa)
 }
 .header{
     border: 3px solid black;
-    background-color: white;
+    background-color: lightblue;
     font-family: 'Schoolbell', arial, serif;
 }
 .buttons{
     border: 3px solid black;
-    text-align: center;
+    text-align: left;
     padding: 10px;
+    background-color: rgb(240, 202, 209);
 }
-#save{
-    font-family: 'Schoolbell', arial, serif;
-    font-size: 25px;
-    background-color: pink;
-}
-#lock{
-    font-family: 'Schoolbell', arial, serif;
-    font-size: 25px;
-    background-color: pink;
-}
-#img{
-    font-family: 'Schoolbell', arial, serif;
-    font-size: 25px;
-    background-color: pink;
-}
-#NightMode{
-    font-family: 'Schoolbell', arial, serif;
-    font-size: 25px;
-    background-color: pink;
-}
-
 #passage{
     width: 100%;
     box-sizing: border-box;
@@ -51,13 +31,42 @@ Authors: CodeFreeze(Erfan, Idil, William and Marwa)
     -webkit-box-sizing: border-box;
     font-family: 'Schoolbell', arial, serif;
 }
-#starter{
+#welcome{
+    border: 3px solid black;
+    text-align: left;
+    padding: 10px;
     font-family: 'Schoolbell', arial, serif;
     font-size: 25px;
+    background-color: lightblue;
 }
+
+/*functioncal buttons*/
+
+#lock{
+    font-family: 'Schoolbell', arial, serif;
+    font-size: 40px;
+    background-color: white;
+}
+#NightMode{
+    font-family: 'Schoolbell', arial, serif;
+    font-size: 40px;
+    background-color: white;
+}
+
+/*passage buttons*/
 #add{
-    background-color: aliceblue;
+    background-color: white;
     font-family: 'Schoolbell', arial, serif;
     font-size: 20px;
+}
+#save{
+    background-color: white;
+    font-family: 'Schoolbell', arial, serif;
+    font-size: 20px;
+}
+#img{
+    font-family: 'Schoolbell', arial, serif;
+    font-size: 20px;
+    background-color: white;
 }
     
