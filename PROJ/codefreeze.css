@@ -4,6 +4,13 @@ EECS1012 - PROJECT
 Authors: CodeFreeze(Erfan, Idil, William and Marwa)
 */
 
+#main{
+    background-color: #beefc4;
+    background-image: linear-gradient(90deg, transparent 50%,
+      rgba(255,255,255,.5) 50%);
+    background-size: 50px 50px; 
+}
+
 #name{
     text-align: left;
     color: black;
@@ -13,12 +20,12 @@ Authors: CodeFreeze(Erfan, Idil, William and Marwa)
     color: black;
     padding-left: 10px;
 }
-.header{
+#header{
     border: 3px solid black;
     background-color: lightblue;
     font-family: 'Schoolbell', arial, serif;
 }
-.buttons{
+#buttons{
     border: 3px solid black;
     text-align: left;
     padding: 10px;
@@ -30,6 +37,14 @@ Authors: CodeFreeze(Erfan, Idil, William and Marwa)
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
     font-family: 'Schoolbell', arial, serif;
+}
+#passage{
+    border: 3px solid black;
+    text-align: left;
+    padding: 10px;
+    font-family: 'Schoolbell', arial, serif;
+    font-size: 25px;
+    background-color: lightyellow;
 }
 #welcome{
     border: 3px solid black;

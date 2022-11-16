@@ -4,6 +4,7 @@ EECS1012 - PROJECT
 Authors: CodeFreeze(Erfan, Idil, William and Marwa)
 */
 
+var clicked=1;
 
 function nameCatcher() {
     let username = sessionStorage.getItem('username');
@@ -30,8 +31,16 @@ function on1(){
 }
 function on2(){
     let button = document.getElementById("lock");
-    button.style.backgroundColor = "lightgreen";
-    button.style.color = "white";
+
+    if(clicked==0){
+        button.style.backgroundColor = "red";
+        button.style.color = "white";
+    }
+    if(clicked==1){
+        button.style.backgroundColor = "lightgreen";
+        button.style.color = "white";
+    }
+ 
 }
 function on3(){
     let button = document.getElementById("img");
@@ -73,4 +82,8 @@ function out5(){
     let button = document.getElementById("add");
     button.style.backgroundColor = "white";
     button.style.color = "black";
+}
+function NightModeON(){
+}
+function NightModeOFF(){
 }
