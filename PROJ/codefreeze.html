@@ -1,50 +1,30 @@
-<!--
-Web-based diary - html
-EECS1012 - PROJECT
-Authors: CodeFreeze(Erfan, Idil, William and Marwa)
--->
-
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CodeFreezeDiary</title>
-    <link rel="stylesheet" type="text/css" href="codefreeze.css" title="style" />
-    <link href = "https://fonts.googleapis.com/css?family=Schoolbell&v1" rel="stylesheet">
-    <script src="codefreeze.js"></script>
+    <title>Login page</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 </head>
-<body id="main" onload="nameCatcher()">
-    <div id="header">
-        <h1 id="name"></h1>
-        <h3 id="date" style="text-align:left;"></h3>
-        
-        <script>
-            n =  new Date();
-            y = n.getFullYear();
-            m = n.getMonth() + 1;
-            d = n.getDate();
-            document.getElementById("date").innerHTML = m + "/" + d + "/" + y + "  |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||";
-
-
-        </script>
-        
-    </div>
-    &nbsp; <!--Adds space in between the two div-->
-    <div id="buttons">
-        <button id="lock"      onclick="" onmouseover="on2()" onmouseout="out2()">LOCK</button>
-        <button id="NightMode" onclick="NightModeON()" onmouseover="on4()" onmouseout="out4()">NIGHT MODE</button>
-    </div>
-    <div class="passage">
-        <h3 id="welcome">Write me about your day |||||||||||||||||||||||||||||||||||||||||||||||||||||||</h3>
-        <label for="prompt"></label>
-
-        <textarea id="passage" name="form" rows="4" cols="50"></textarea>
-        <button id="add"  onclick="" onmouseover="on5()" onmouseout="out5()">ADD</button>
-        <button id="save" onclick="" onmouseover="on1()" onmouseout="out1()">SAVE</button>
-        <button id="img"  onclick="" onmouseover="on3()" onmouseout="out3()">IMG</button>
-    </div>
-        
+<body onload="chsPswd()">
+<form>
+    <label for="pswd">Enter your password: </label>
+    <input type="password" id="pswd">
+    <input type="button" value="Submit" onclick="checkPswd();" />
+</form>
+<!--Function to check password the already set password is admin-->
+<script type="text/javascript">
+     var confirmPassword;
+    function checkPswd() {
+        var password = document.getElementById("pswd").value;
+        if (password == confirmPassword) {
+             window.location="main.html";
+        }
+        else{
+            alert("Passwords do not match.");
+        }
+    }
+    function chsPswd(){
+            confirmPassword = prompt("Enter your desired password")
+    }
+</script>
 </body>
 </html>

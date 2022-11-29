@@ -67,7 +67,11 @@ Authors: CodeFreeze(Erfan, Idil, William and Marwa)
     font-size: 40px;
     background-color: white;
 }
-
+#LightMode{
+    font-family: 'Schoolbell', arial, serif;
+    font-size: 40px;
+    background-color: white;
+}
 /*passage buttons*/
 #add{
     background-color: white;
