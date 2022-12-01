@@ -14,6 +14,7 @@ Authors: CodeFreeze(Erfan, Idil, William and Marwa)
     <link rel="stylesheet" type="text/css" href="codefreeze.css" title="style" />
     <link href = "https://fonts.googleapis.com/css?family=Schoolbell&v1" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
     <script src="codefreeze.js"></script>
 </head>
 <body id="main" onload="starter()">
@@ -43,9 +44,9 @@ Authors: CodeFreeze(Erfan, Idil, William and Marwa)
         <label for="prompt"></label>
 
         <button id="add"  onclick="add()" onmouseover="on5()" onmouseout="out5()">ADD</button>
-        <button id="save" onclick="" onmouseover="on1()" onmouseout="out1()">SAVE</button>
-        <button id="img"  onclick="" onmouseover="on3()" onmouseout="out3()">IMG</button>
-        
+        <button id="delete"  onclick="del()" onmouseover="on3()" onmouseout="out3()">DELETE</button>
+        <button id="save" onclick="save()" onmouseover="on1()" onmouseout="out1()">SAVE</button>
+
     </div>
         
 </body>

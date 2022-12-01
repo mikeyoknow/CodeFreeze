@@ -143,6 +143,7 @@ function add(){
     $(newP).attr("name","form"+i);
     $(newP).attr("rows","4");
     $(newP).attr("cols","50");
+    $(newP).attr("innerHTML", "passage#"+i);
 
     $(newP).css({'backgroundColor':'lightyellow'})
     $(newP).css({'font-family':'Schoolbell','arial':'serif'});
@@ -155,6 +156,27 @@ function add(){
     $(newP).css({'width': '100%'});
     $(newP).css({'box-sizing': 'border-box'});
 
+    n =  new Date();
+    y = n.getFullYear();
+    m = n.getMonth() + 1;
+    d = n.getDate();
+    newP.innerHTML = m + "/" + d + "/" + y
+
     $(document.getElementsByClassName("passage")).append(newP);
 }
 
+function save(){
+
+}
+function del(){
+    alert("which passage do you want to delete? You have "+i+" passage so far")
+    var res = prompt("Write the passage number you'd like to delete:")
+    
+    if(res>i || res<1){
+        alert("This passage doesn't exist!")
+    }else{
+        document.getElementById("passage"+res).style.display = "none";
+        alert("passage"+res+" has been deleted!");
+    }
+    
+}
