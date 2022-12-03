@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login page</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="client.js"></script>
+    <link rel="stylesheet" type="text/css" href="codefreeze.css" title="style" />
+</head>
+<body onload="chsPswd()">
+
+<form>
+    <h1 id="alertText"></h1>
+    <label for="user">Enter your username: </label>
+    <input type="user" id="user" value="Username">
+    <label for="pswd">Enter your password: </label>
+    <input type="password" id="pswd" value="Password">
+    <input type="button" id="login" value="Login" onclick="loginButton()" />
+    <input type="button" id="createNewAccount" value="Create New Profile" onclick="createNewAccount();" />
+</form>
+<!--Function to check password the already set password is admin-->
+<script type="text/javascript">
+     var confirmPassword;
+    function checkPswd() {
+        var password = document.getElementById("pswd").value;
+        if (password == confirmPassword) {
+             window.location="main.html";
+        }
+        else{
+            alert("Passwords do not match.");
+        }
+    }
+    function chsPswd(){
+            //confirmPassword = prompt("Enter your desired password")
+    }
+</script>
+</body>
+</html>
