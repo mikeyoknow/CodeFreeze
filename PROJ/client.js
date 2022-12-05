@@ -216,15 +216,12 @@ function hash(input){
 function loginButton(){
     var name = document.getElementById("user").value;
     var pass = document.getElementById("pswd").value;
-    $.post(
-        url+'?data='+JSON.stringify({
-        'action':'login', 
+    $.post(url+'?data='+JSON.stringify({
         'name':name, 
-        'pass':pass, 
-        }),
-        response(data)
+        'action':'login', 
+        'pass':pass}),
+        response
     );
-    alert(3);
 }
 
 function createNewAccount(){
@@ -256,8 +253,9 @@ function userDataSheetRequest(){
 }
 
 function response(data, status){
-    alert(1);
     var response = JSON.parse(data);
+    alert(response["action"]);
+    
     if(response["action"]=="loginSuccess"){
         loginSuccess();
     }else if(response["action"]=="loginFailed"){
@@ -269,16 +267,20 @@ function response(data, status){
     }
 }
 
+
 function loginSuccess(){
+    
     document.getElementById("alertText").innerHTML = "Login Success";
     window.location="main.html";
 }
 
 function loginFailed(){
+    
     document.getElementById("alertText").innerHTML = "Login Failed";
 }
 
 function userNotFound(){
+    
     document.getElementById("alertText").innerHTML = "User not found. Create new account?";
 }
 

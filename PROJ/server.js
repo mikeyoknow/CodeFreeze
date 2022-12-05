@@ -25,22 +25,28 @@ app.get("/", function(req, res) {
 });
 
 app.post('/post', (req, res) => {
-    console.log("Post Recieved");
+    res.header("Access-Control-Allow-Origin", "*");
     var z = JSON.parse(req.query['data']);
+
     console.log(z);
     if (z['action'] == 'login') {
-        if(!isUserValid(user)){
+        var username = z['name'];
+        var pass = z['pass'];
+        if(!isUserValid(username)){
+            console.log("Usernotvalid");
             var jsontext = JSON.stringify({
                 'action':'userNotFound'
             });
             res.send(jsontext);
         }
-        else if(isPassValid(user, pass)){
+        else if(isPassValid(username, pass)){
             var jsontext = JSON.stringify({
                 'action':'loginSuccess'
             });
             res.send(jsontext);
+            console.log("passvalid");
         }else{
+            console.log("Loginfail");
             var jsontext = JSON.stringify({
                 'action':'loginFailed'
             });
@@ -49,14 +55,16 @@ app.post('/post', (req, res) => {
     }else if (z['action'] == 'userDataSheetRequest') {
         var jsontext = JSON.stringify({
             'action':'getUserDataSheet',
-            'userDataSheet': readUserDataSheet(user)
+            'userDataSheet': readUserDataSheet(username)
         });
         res.send(jsontext);
+    } else {
+        res.send(JSON.stringify({ 'msg': 'ERROR' }));
     }
 
 }).listen(port);
 console.log("Server is running! (listening on port " + port + ")");
-//test();
+test();
 
 function initialize(){
 
@@ -140,20 +148,4 @@ function hash(input){
 
 function test(){
     
-    var testDataSheet = {
-            "name":"Stick",
-            "pass":"golf"
-        };
-    
-
-    var jsonified = JSON.stringify(testDataSheet);
-    console.log(testDataSheet.pass);
-    console.log(JSON.parse(jsonified)["pass"]);
-
-    updateUserDataSheet("Stick",testDataSheet);
-    console.log(readUserDataSheet("Stick"));
-    console.log(isPassValid("Stick", "golf"));
-
-              
-    console.log("Done");
 }
