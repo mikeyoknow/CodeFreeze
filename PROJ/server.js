@@ -58,7 +58,7 @@ app.post('/post', (req, res) => {
     }else if (action == 'userDataSheetUpdate') {
 
         try{
-            updateUserDataSheet(username, userDataSheet);
+            updateUserDataSheet(username, z['userDataSheet']);
         }catch(err){
             console.log(err);
             res.send(JSON.stringify({ 'msg': 'ERROR' }));
@@ -131,7 +131,7 @@ function updateUserDataSheet(username, userDataSheet){
 function createNewUser(username, password){
     var fs = require('fs');
     try {
-        var newDataSheet = {'username':username, 'password': password, 'diaryEntryList': []};
+        var newDataSheet = {'username':username, 'password': password, 'diaryEntryList': [{"id": 0, "content":"First Entry"}]};
         fs.writeFile('UserData/'+username+'.txt', JSON.stringify(newDataSheet), function (err) {if (err) throw err;console.log('Updated!');});
         console.log("New User Created");
     } catch (err) {
@@ -143,7 +143,9 @@ function createNewUser(username, password){
 function readUserDataSheet(username){
     var fs = require('fs');
     try {
-        console.log("readinguserdata");
+        console.log("readinguserdata:");
+        
+        console.log(JSON.parse(fs.readFileSync('UserData/'+username+'.txt', 'utf8')));
         return JSON.parse(fs.readFileSync('UserData/'+username+'.txt', 'utf8'));
     } catch (err) {
         console.log(err);

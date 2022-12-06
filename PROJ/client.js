@@ -39,7 +39,7 @@ function on2(){
  
 }
 function on3(){
-    let button = document.getElementById("img");
+    let button = document.getElementById("delete");
     button.style.backgroundColor = "lightgreen";
     button.style.color = "white";
 }
@@ -70,7 +70,7 @@ function out2(){
     button.style.color = "black";
 }
 function out3(){
-    let button = document.getElementById("img");
+    let button = document.getElementById("delete");
     button.style.backgroundColor = "white";
     button.style.color = "black";
 }
@@ -118,6 +118,17 @@ function starter() {
     var d = n.getDate();
     document.getElementById("date").innerHTML = m + "/" + d + "/" + y + " Hello, " + username;
 
+    setTimeout(loadEntries, 50); //timeout neccessary so that userDataSheet isn't undefined when called
+    
+}
+
+function loadEntries(){
+    userDataSheetRequest();
+    userDataSheet['diaryEntryList'].forEach(createPassageElement);
+    function createPassageElement(entry) {
+        //alert(entry['id']);
+        add(entry['id'], entry['content']);
+    }
 }
 
 function lock(){
@@ -159,14 +170,17 @@ function lightMode() {
     butt.style.backgroundColor = "rgb(240, 202, 209)";
     butt.style.borderColor = "black";
 }
-function add(){
+
+function add(entryID, content){
+
     var newP = document.createElement("textarea")
+
+
     i = i+1;
-    $(newP).attr("id","passage"+i);
     $(newP).attr("username","form"+i);
     $(newP).attr("rows","4");
     $(newP).attr("cols","50");
-    $(newP).attr("innerHTML", "passage#"+i);
+    //$(newP).attr("innerHTML", "passage#"+i);
 
     $(newP).css({'backgroundColor':'lightyellow'})
     $(newP).css({'font-family':'Schoolbell','arial':'serif'});
@@ -179,13 +193,42 @@ function add(){
     $(newP).css({'width': '100%'});
     $(newP).css({'box-sizing': 'border-box'});
 
-    n =  new Date();
-    y = n.getFullYear();
-    m = n.getMonth() + 1;
-    d = n.getDate();
-    newP.innerHTML = m + "/" + d + "/" + y
+    $(newP).attr("class","passage");
 
-    $(document.getElementsByClassName("passage")).append(newP);
+    if (entryID == null){
+        var newID = getMaxID()+1;
+        $(newP).attr("id",newID);
+        var n =  new Date();
+        var y = n.getFullYear();
+        var m = n.getMonth() + 1;
+        var d = n.getDate();
+        newP.innerHTML = m + "/" + d + "/" + y;
+        userDataSheet['diaryEntryList'].push({'id':newID, 'content':newP.innerHTML})
+    }else{
+        //$(newP).attr("id",entryID);
+        //$(newP).attr("innerHTML",content);
+        newP.id = entryID;
+        newP.innerHTML = content;
+    }
+
+
+
+    document.getElementById("passages").append(newP);
+    //var newID = newP.id;
+    //var newContent = newP.innerHTML;
+    //userDataSheet['diaryEntryList'].append({'id' : newID, 'content' : newContent});
+    //userDataSheetUpdate();
+
+}
+
+function getMaxID(){
+    var max = 0;
+    for(var i = 0; i < userDataSheet['diaryEntryList'].length; i++){
+        if(userDataSheet['diaryEntryList']['id'] > max){
+            max = userDataSheet['diaryEntryList']['id'];
+        }
+    }
+    return max;
 }
 
 function save(){
@@ -193,12 +236,13 @@ function save(){
     var tempID;
     var tempPassage;
 
-    for(var i = 0; i<$(document.getElementsByClassName("passage")).length; i++){
-        tempID =  $(document.getElementsByClassName("passage"))[i].id;
-        tempPassage = $(document.getElementsByClassName("passage"))[i].innerHTML;
-        tempEntryList.append({tempID:tempPassage});
+    for(var i = 0; i< document.getElementsByClassName("passage").length; i++){
+        tempID =  document.getElementsByClassName("passage")[i].id;
+        tempPassage = document.getElementsByClassName("passage")[i].value;
+        tempEntryList.push({'id':tempID, 'content':tempPassage});
     }
     userDataSheet['diaryEntryList'] = tempEntryList;
+    console.log(tempEntryList);
     userDataSheetUpdate();
 
 }
@@ -276,6 +320,7 @@ function userDataSheetRequest(){
         'password':password}),
         response
     );
+     
 }
 
 function userDataSheetUpdate(){
@@ -293,7 +338,7 @@ function userDataSheetUpdate(){
 
 function response(data, status){
     var response = JSON.parse(data);
-    alert(response["action"]);
+    //alert(response["action"]);
     
     if(response["action"]=="loginSuccess"){
         loginSuccess();
@@ -325,12 +370,12 @@ function loginFailed(){
 }
 
 function userNotFound(){
-    
     document.getElementById("alertText").innerHTML = "User not found. Create new account?";
 }
 
 function setUserDataSheet(response){
     userDataSheet = response["userDataSheet"];
+    //alert(userDataSheet['username']);
 }
 
 function accountCreated(){
