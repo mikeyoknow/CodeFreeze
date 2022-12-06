@@ -10,18 +10,18 @@
 
 <form>
     <h1 id="alertText"></h1>
-    <label for="user">Enter your username: </label>
-    <input type="user" id="user">
-    <label for="pswd">Enter your password: </label>
-    <input type="password" id="pswd">
+    <label for="username">Enter your username: </label>
+    <input type="text" id="username">
+    <label for="password">Enter your password: </label>
+    <input type="pswd" id="password">
     <input type="button" id="login" value="Login" onclick="loginButton()" />
-    <input type="button" id="createNewAccount" value="Create New Profile" onclick="createNewAccount();" />
+    <input type="button" id="createNewAccount" value="Create New Account" onclick="createButton()" />
 </form>
 <!--Function to check password the already set password is admin-->
 <script type="text/javascript">
      var confirmPassword;
     function checkPswd() {
-        var password = document.getElementById("pswd").value;
+        var password = document.getElementById("password").value;
         if (password == confirmPassword) {
              window.location="main.html";
         }

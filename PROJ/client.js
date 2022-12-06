@@ -94,7 +94,7 @@ function starter() {
     }
 
     if (username != null) {
-        document.getElementById("name").innerHTML = "Welcome " + username;
+        document.getElementById("username").innerHTML = "Welcome " + username;
         sessionStorage.setItem('username', username);
     } else {
         document.getElementById("noUser").innerHTML = "Welcome, Stranger!";
@@ -111,8 +111,8 @@ function darkMode() {
     head.style.backgroundColor = "black"
     head.style.borderColor = "white";
 
-    var name = document.getElementById("name")
-    name.style.color = "white"
+    var username = document.getElementById("username")
+    username.style.color = "white"
 
     var date = document.getElementById("date")
     date.style.color = "white"
@@ -129,8 +129,8 @@ function lightMode() {
     head.style.backgroundColor = "lightblue"
     head.style.borderColor = "black";
 
-    var name = document.getElementById("name")
-    name.style.color = "black"
+    var username = document.getElementById("username")
+    username.style.color = "black"
 
     var date = document.getElementById("date")
     date.style.color = "black"
@@ -143,7 +143,7 @@ function add(){
     var newP = document.createElement("textarea")
     i = i+1;
     $(newP).attr("id","passage"+i);
-    $(newP).attr("name","form"+i);
+    $(newP).attr("username","form"+i);
     $(newP).attr("rows","4");
     $(newP).attr("cols","50");
     $(newP).attr("innerHTML", "passage#"+i);
@@ -187,18 +187,18 @@ function del(){
 
 //pass is hashed, in the form of an int
 //content should be string
-function encrypt(content, pass){
+function encrypt(content, password){
     var charArray = Array.from(content)
     for(var i = 0; i < charArray.length; i++){
-        charArray[i]=pass+charArray[i].charCodeAt(0);
+        charArray[i]=password+charArray[i].charCodeAt(0);
     }
     return charArray;
 }
 
 //pass is hashed, in the form of an int
-function decrypt(content, pass){
+function decrypt(content, password){
     for(var i = 0; i < content.length; i++){
-        content[i]=String.fromCharCode(content[i]-pass);
+        content[i]=String.fromCharCode(content[i]-password);
     }
     return content.join("");
 }
@@ -213,40 +213,37 @@ function hash(input){
     return output;
 }
 
-function loginButton(){
-    var name = document.getElementById("user").value;
-    var pass = document.getElementById("pswd").value;
+function createButton(){
+    var username = document.getElementById("username").value;
+    var password = document.getElementById("password").value;
     $.post(url+'?data='+JSON.stringify({
-        'name':name, 
-        'action':'login', 
-        'pass':pass}),
+        'username':username, 
+        'action':'createNewAccount', 
+        'password':password}),
         response
     );
 }
 
-function createNewAccount(){
-    var name = document.getElementById("name").innerHTML;
-    var pass = document.getElementById("pswd").innerHTML;
-
-    $.post(
-        url+'?data='+JSON.stringify({
-        'action':'createNewAccount', 
-        'name':name, 
-        'pass':pass, 
-        }),
+function loginButton(){
+    var username = document.getElementById("username").value;
+    var password = document.getElementById("password").value;
+    $.post(url+'?data='+JSON.stringify({
+        'username':username, 
+        'action':'login', 
+        'password':password}),
         response
     );
 }
 
 function userDataSheetRequest(){
-    var name = document.getElementById("name").innerHTML;
-    var pass = document.getElementById("pswd").innerHTML;
+    var username = document.getElementById("username").value;
+    var password = document.getElementById("password").value;
 
     $.post(
         url+'?data='+JSON.stringify({
         'action':'userDataSheetRequest', 
-        'name':name, 
-        'pass':pass, 
+        'username':username, 
+        'password':password, 
         }),
         response
     );
@@ -264,6 +261,10 @@ function response(data, status){
         userNotFound();
     }else if(response["action"]=="getUserDataSheet"){
         getUserDataSheet(response);
+    }else if(response["action"]=="userExists"){
+        document.getElementById("alertText").innerHTML = "User already exists";
+    }else if(response["action"]=="accountCreated"){
+        accountCreated();
     }
 }
 
@@ -286,4 +287,9 @@ function userNotFound(){
 
 function getUserDataSheet(response){
     userDataSheet = response["userDataSheet"];
+}
+
+function accountCreated(){
+    document.getElementById("alertText").innerHTML = "Account Created";
+    window.location="main.html";
 }

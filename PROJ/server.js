@@ -2,7 +2,7 @@
 /*
 
 const userDataSheet = {
-    name: "",
+    username: "",
     password: "Doe", //hashed
     diaryEntryList: []
 };
@@ -27,40 +27,49 @@ app.get("/", function(req, res) {
 app.post('/post', (req, res) => {
     res.header("Access-Control-Allow-Origin", "*");
     var z = JSON.parse(req.query['data']);
-
     console.log(z);
-    if (z['action'] == 'login') {
-        var username = z['name'];
-        var pass = z['pass'];
+    var username = z['username'];
+    var password = z['password'];
+    var action = z['action'];
+
+    if (action == 'login') {
         if(!isUserValid(username)){
+            var jsontext = JSON.stringify({'action':'userNotFound'});
             console.log("Usernotvalid");
-            var jsontext = JSON.stringify({
-                'action':'userNotFound'
-            });
-            res.send(jsontext);
         }
-        else if(isPassValid(username, pass)){
-            var jsontext = JSON.stringify({
-                'action':'loginSuccess'
-            });
-            res.send(jsontext);
+        else if(isPasswordValid(username, password)){
+            var jsontext = JSON.stringify({'action':'loginSuccess'});
             console.log("passvalid");
         }else{
+            var jsontext = JSON.stringify({'action':'loginFailed'});
             console.log("Loginfail");
-            var jsontext = JSON.stringify({
-                'action':'loginFailed'
-            });
-            res.send(jsontext);
         }
-    }else if (z['action'] == 'userDataSheetRequest') {
+        res.send(jsontext);
+
+    }else if (action == 'userDataSheetRequest') {
+
         var jsontext = JSON.stringify({
             'action':'getUserDataSheet',
             'userDataSheet': readUserDataSheet(username)
         });
         res.send(jsontext);
-    } else {
+
+    }else if (action == 'createNewAccount') {
+
+        if(isUserValid(username)){
+            console.log("userexists");
+            var jsontext = JSON.stringify({'action':'userExists'});
+        }else{
+            createNewUser(username, password);
+            console.log("accountcreated");
+            var jsontext = JSON.stringify({'action':'accountCreated'});
+        }
+        res.send(jsontext);
+
+    }else{
         res.send(JSON.stringify({ 'msg': 'ERROR' }));
     }
+
 
 }).listen(port);
 console.log("Server is running! (listening on port " + port + ")");
@@ -74,21 +83,21 @@ function createNameList(){
 
 }
 
-function isUserValid(user){
+function isUserValid(username){
     var fs = require('fs');
     try {
-        fs.readFileSync('UserData/'+user+'.txt', 'utf8');
+        fs.readFileSync('UserData/'+username+'.txt', 'utf8');
     } catch (err) {
         return false;
     }
     return true;
 }
 
-function isPassValid(user, pass){
-    if(readUserDataSheet(user)["pass"] == pass){
+function isPasswordValid(username, password){
+    if(readUserDataSheet(username)["password"] == password){
         return true;
     }
-    return readUserDataSheet(user)["pass"];
+    return readUserDataSheet(username)["password"];
 }
 
 function getUserList(){
@@ -96,10 +105,10 @@ function getUserList(){
     return userList;
 }
 
-function updateUserDataSheet(user, userDataSheet){
+function updateUserDataSheet(username, userDataSheet){
     var fs = require('fs');
     try {
-        fs.writeFileSync('UserData/'+user+'.txt', JSON.stringify(userDataSheet));
+        fs.writeFileSync('UserData/'+username+'.txt', JSON.stringify(userDataSheet));
         
         
     } catch (err) {
@@ -108,10 +117,25 @@ function updateUserDataSheet(user, userDataSheet){
     }
 }
 
-function readUserDataSheet(user){
+function createNewUser(username, password){
     var fs = require('fs');
     try {
-        return JSON.parse(fs.readFileSync('UserData/'+user+'.txt', 'utf8'));
+        var newDataSheet = {'username':username, 'password': password};
+        fs.writeFile('UserData/'+username+'.txt', JSON.stringify(newDataSheet), function (err) {
+if (err) throw err;
+            console.log('Updated!');
+          });
+        console.log("New User Created");
+    } catch (err) {
+        console.log(err);
+        return err;
+    }
+}
+
+function readUserDataSheet(username){
+    var fs = require('fs');
+    try {
+        return JSON.parse(fs.readFileSync('UserData/'+username+'.txt', 'utf8'));
     } catch (err) {
         console.log(err);
         return err;
@@ -120,18 +144,18 @@ function readUserDataSheet(user){
 
 //pass is hashed, in the form of an int
 //content should be string
-function encrypt(content, pass){
+function encrypt(content, password){
     var charArray = Array.from(content)
     for(var i = 0; i < charArray.length; i++){
-        charArray[i]=pass+charArray[i].charCodeAt(0);
+        charArray[i]=password+charArray[i].charCodeAt(0);
     }
     return charArray;
 }
 
 //pass is hashed, in the form of an int
-function decrypt(content, pass){
+function decrypt(content, password){
     for(var i = 0; i < content.length; i++){
-        content[i]=String.fromCharCode(content[i]-pass);
+        content[i]=String.fromCharCode(content[i]-password);
     }
     return content.join("");
 }
