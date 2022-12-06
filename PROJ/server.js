@@ -49,9 +49,22 @@ app.post('/post', (req, res) => {
     }else if (action == 'userDataSheetRequest') {
 
         var jsontext = JSON.stringify({
-            'action':'getUserDataSheet',
+            'action':'userDataSheetReturn',
             'userDataSheet': readUserDataSheet(username)
         });
+        console.log("datasheetrequest");
+        res.send(jsontext);
+
+    }else if (action == 'userDataSheetUpdate') {
+
+        try{
+            updateUserDataSheet(username, userDataSheet);
+        }catch(err){
+            console.log(err);
+            res.send(JSON.stringify({ 'msg': 'ERROR' }));
+        }
+        var jsontext = JSON.stringify({'action':'dataUpdateSuccess'});
+        console.log("datasheetupdate");
         res.send(jsontext);
 
     }else if (action == 'createNewAccount') {
@@ -108,9 +121,7 @@ function getUserList(){
 function updateUserDataSheet(username, userDataSheet){
     var fs = require('fs');
     try {
-        fs.writeFileSync('UserData/'+username+'.txt', JSON.stringify(userDataSheet));
-        
-        
+        fs.writeFile('UserData/'+username+'.txt', JSON.stringify(userDataSheet), function (err) {if (err) throw err;console.log('Updated!');});
     } catch (err) {
         console.log(err);
         return err;
@@ -120,11 +131,8 @@ function updateUserDataSheet(username, userDataSheet){
 function createNewUser(username, password){
     var fs = require('fs');
     try {
-        var newDataSheet = {'username':username, 'password': password};
-        fs.writeFile('UserData/'+username+'.txt', JSON.stringify(newDataSheet), function (err) {
-if (err) throw err;
-            console.log('Updated!');
-          });
+        var newDataSheet = {'username':username, 'password': password, 'diaryEntryList': []};
+        fs.writeFile('UserData/'+username+'.txt', JSON.stringify(newDataSheet), function (err) {if (err) throw err;console.log('Updated!');});
         console.log("New User Created");
     } catch (err) {
         console.log(err);
@@ -135,6 +143,7 @@ if (err) throw err;
 function readUserDataSheet(username){
     var fs = require('fs');
     try {
+        console.log("readinguserdata");
         return JSON.parse(fs.readFileSync('UserData/'+username+'.txt', 'utf8'));
     } catch (err) {
         console.log(err);

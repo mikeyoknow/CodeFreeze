@@ -15,22 +15,13 @@ Authors: CodeFreeze(Erfan, Idil, William and Marwa)
     <link href = "https://fonts.googleapis.com/css?family=Schoolbell&v1" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
-    <script src="codefreeze.js"></script>
+    <script src="client.js"></script>
 </head>
 <body id="main" onload="starter()">
     <div id="header">
         <h1 id="name"></h1>
         <h3 id="date" style="text-align:left;"></h3>
         
-        <script>
-            n =  new Date();
-            y = n.getFullYear();
-            m = n.getMonth() + 1;
-            d = n.getDate();
-            document.getElementById("date").innerHTML = m + "/" + d + "/" + y + "  |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||";
-
-
-        </script>
         
     </div>
     &nbsp; <!--Adds space in between the two div-->
@@ -40,7 +31,7 @@ Authors: CodeFreeze(Erfan, Idil, William and Marwa)
         <button id="LightMode" onclick="lightMode()" onmouseover="on6()" onmouseout="out6()">LIGHT MODE</button>
     </div>
     <div class="passage">
-        <h3 id="welcome">Write me about your day |||||||||||||||||||||||||||||||||||||||||||||||||||||||</h3>
+        <h3 id="welcome">Write about your day!</h3>
         <label for="prompt"></label>
 
         <button id="add"  onclick="add()" onmouseover="on5()" onmouseout="out5()">ADD</button>

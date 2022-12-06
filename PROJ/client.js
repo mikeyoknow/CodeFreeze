@@ -5,9 +5,12 @@ Authors: CodeFreeze(Erfan, Idil, William and Marwa)
 */
 
 var clicked=1;
-var password;
 var pass;
 var user;
+
+var userDataSheet;
+var username;
+var password;
 
 let prm = false;
 var i = 0;
@@ -86,6 +89,7 @@ function out6(){
     button.style.backgroundColor = "white";
     button.style.color = "black";
 }
+/*
 function starter() {
     let username = sessionStorage.getItem('username');
 
@@ -100,6 +104,22 @@ function starter() {
         document.getElementById("noUser").innerHTML = "Welcome, Stranger!";
     }
 }
+*/
+
+
+function starter() {
+    username = sessionStorage.getItem('username');
+    password = sessionStorage.getItem('password');
+    userDataSheetRequest();
+    
+    var n =  new Date();
+    var y = n.getFullYear();
+    var m = n.getMonth() + 1;
+    var d = n.getDate();
+    document.getElementById("date").innerHTML = m + "/" + d + "/" + y + " Hello, " + username;
+
+}
+
 function lock(){
     window.location="codefreeze.html";
 }
@@ -169,6 +189,17 @@ function add(){
 }
 
 function save(){
+    var tempEntryList = [];
+    var tempID;
+    var tempPassage;
+
+    for(var i = 0; i<$(document.getElementsByClassName("passage")).length; i++){
+        tempID =  $(document.getElementsByClassName("passage"))[i].id;
+        tempPassage = $(document.getElementsByClassName("passage"))[i].innerHTML;
+        tempEntryList.append({tempID:tempPassage});
+    }
+    userDataSheet['diaryEntryList'] = tempEntryList;
+    userDataSheetUpdate();
 
 }
 
@@ -214,8 +245,8 @@ function hash(input){
 }
 
 function createButton(){
-    var username = document.getElementById("username").value;
-    var password = document.getElementById("password").value;
+    username = document.getElementById("username").value;
+    password = document.getElementById("password").value;
     $.post(url+'?data='+JSON.stringify({
         'username':username, 
         'action':'createNewAccount', 
@@ -225,8 +256,8 @@ function createButton(){
 }
 
 function loginButton(){
-    var username = document.getElementById("username").value;
-    var password = document.getElementById("password").value;
+    username = document.getElementById("username").value;
+    password = document.getElementById("password").value;
     $.post(url+'?data='+JSON.stringify({
         'username':username, 
         'action':'login', 
@@ -236,15 +267,26 @@ function loginButton(){
 }
 
 function userDataSheetRequest(){
-    var username = document.getElementById("username").value;
-    var password = document.getElementById("password").value;
+    //var username = document.getElementById("username").value;
+    //var password = document.getElementById("password").value;
 
-    $.post(
-        url+'?data='+JSON.stringify({
-        'action':'userDataSheetRequest', 
+    $.post(url+'?data='+JSON.stringify({
         'username':username, 
-        'password':password, 
-        }),
+        'action':'userDataSheetRequest', 
+        'password':password}),
+        response
+    );
+}
+
+function userDataSheetUpdate(){
+    //var username = document.getElementById("username").value;
+    //var password = document.getElementById("password").value;
+
+    $.post(url+'?data='+JSON.stringify({
+        'username':username, 
+        'action':'userDataSheetUpdate',  
+        'userDataSheet': userDataSheet,
+        'password':password}),
         response
     );
 }
@@ -259,8 +301,8 @@ function response(data, status){
         loginFailed();
     }else if(response["action"]=="userNotFound"){
         userNotFound();
-    }else if(response["action"]=="getUserDataSheet"){
-        getUserDataSheet(response);
+    }else if(response["action"]=="userDataSheetReturn"){
+        setUserDataSheet(response);
     }else if(response["action"]=="userExists"){
         document.getElementById("alertText").innerHTML = "User already exists";
     }else if(response["action"]=="accountCreated"){
@@ -270,8 +312,10 @@ function response(data, status){
 
 
 function loginSuccess(){
-    
     document.getElementById("alertText").innerHTML = "Login Success";
+    userDataSheetRequest();
+    sessionStorage.setItem('username', username);
+    sessionStorage.setItem('password', password);
     window.location="main.html";
 }
 
@@ -285,11 +329,13 @@ function userNotFound(){
     document.getElementById("alertText").innerHTML = "User not found. Create new account?";
 }
 
-function getUserDataSheet(response){
+function setUserDataSheet(response){
     userDataSheet = response["userDataSheet"];
 }
 
 function accountCreated(){
     document.getElementById("alertText").innerHTML = "Account Created";
+    sessionStorage.setItem('username', username);
+    sessionStorage.setItem('password', password);
     window.location="main.html";
 }
