@@ -173,8 +173,10 @@ function lightMode() {
 
 function add(entryID, content){
 
-    var newP = document.createElement("textarea")
-
+    var newP = document.createElement("textarea");
+    var newCheck = document.createElement("input");
+    $(newCheck).attr("type","checkbox");
+    var newDiv = document.createElement("div");
 
     i = i+1;
     $(newP).attr("username","form"+i);
@@ -190,13 +192,13 @@ function add(entryID, content){
     $(newP).css({'border':'3px'});
     $(newP).css({'borderColor':'black'});
     $(newP).css({'border':'solid'});
-    $(newP).css({'width': '100%'});
+    $(newP).css({'width': '98%'});
     $(newP).css({'box-sizing': 'border-box'});
 
     $(newP).attr("class","passage");
 
     if (entryID == null){
-        var newID = getMaxID()+1;
+        var newID = String(getMaxID()+1);
         $(newP).attr("id",newID);
         var n =  new Date();
         var y = n.getFullYear();
@@ -205,27 +207,23 @@ function add(entryID, content){
         newP.innerHTML = m + "/" + d + "/" + y;
         userDataSheet['diaryEntryList'].push({'id':newID, 'content':newP.innerHTML})
     }else{
-        //$(newP).attr("id",entryID);
-        //$(newP).attr("innerHTML",content);
         newP.id = entryID;
         newP.innerHTML = content;
     }
 
-
-
-    document.getElementById("passages").append(newP);
-    //var newID = newP.id;
-    //var newContent = newP.innerHTML;
-    //userDataSheet['diaryEntryList'].append({'id' : newID, 'content' : newContent});
-    //userDataSheetUpdate();
+    newCheck.id = "c" + newP.id;
+    $(newCheck).attr("class","checkbox");
+    newDiv.append(newCheck);
+    newDiv.append(newP);
+    document.getElementById("passages").append(newDiv);
 
 }
 
 function getMaxID(){
     var max = 0;
     for(var i = 0; i < userDataSheet['diaryEntryList'].length; i++){
-        if(userDataSheet['diaryEntryList']['id'] > max){
-            max = userDataSheet['diaryEntryList']['id'];
+        if(parseInt(userDataSheet['diaryEntryList'][i]['id']) > max){
+            max = parseInt(userDataSheet['diaryEntryList'][i]['id']);
         }
     }
     return max;
@@ -248,34 +246,60 @@ function save(){
 }
 
 function del(){
-    alert("which passage do you want to delete? You have "+i+" passage so far")
-    var res = prompt("Write the passage number you'd like to delete:")
-    
-    if(res>i || res<1){
-        alert("This passage doesn't exist!")
-    }else{
-        document.getElementById("passage"+res).style.display = "none";
-        alert("passage"+res+" has been deleted!");
+    if(confirm("Are you sure?")){
+        var checkboxList = document.getElementsByClassName("checkbox");
+        for(var i = 0; i < checkboxList.length; i++){
+            if(checkboxList[i].checked){
+                for(var j = 0; j < userDataSheet['diaryEntryList'].length; j ++){
+                    if(String(userDataSheet['diaryEntryList'][j]['id']) === String(checkboxList[i].id.substring(1))){
+                        userDataSheet['diaryEntryList'].splice(j, 1);
+                        document.getElementById(checkboxList[i].id.substring(1)).remove();
+                        checkboxList[i].remove();
+                    }
+                }
+            }
+        }
+
+        userDataSheetUpdate();
     }
-    
+}
+
+
+function encryptEntries(entryList, password){
+    var hashedPass = hash(password);
+    for(var i = 0; i < entryList.length; i++){
+        entryList[i]['content'] = encrypt(entryList[i]['content'], hashedPass);
+    }
+    return entryList;
+}
+
+function decryptEntries(entryList, password){
+    var hashedPass = hash(password);
+    for(var i = 0; i < entryList.length; i++){
+        entryList[i]['content'] = decrypt(entryList[i]['content'], hashedPass);
+    }
+    return entryList;
 }
 
 //pass is hashed, in the form of an int
 //content should be string
 function encrypt(content, password){
-    var charArray = Array.from(content)
+    var charArray = Array.from(content);
+    var hashedPass = hash(password);
     for(var i = 0; i < charArray.length; i++){
-        charArray[i]=password+charArray[i].charCodeAt(0);
+        charArray[i]=hashedPass+charArray[i].charCodeAt(0);
     }
     return charArray;
 }
 
 //pass is hashed, in the form of an int
 function decrypt(content, password){
+    var hashedPass = hash(password);
+    var temp = [];
     for(var i = 0; i < content.length; i++){
-        content[i]=String.fromCharCode(content[i]-password);
+        temp.push(String.fromCharCode(content[i]-hashedPass));
     }
-    return content.join("");
+    return temp.join("");
 }
 
 //input should be string
@@ -292,9 +316,9 @@ function createButton(){
     username = document.getElementById("username").value;
     password = document.getElementById("password").value;
     $.post(url+'?data='+JSON.stringify({
-        'username':username, 
+        'username':encrypt(username, password), 
         'action':'createNewAccount', 
-        'password':password}),
+        'password':hash(password)}),
         response
     );
 }
@@ -303,9 +327,9 @@ function loginButton(){
     username = document.getElementById("username").value;
     password = document.getElementById("password").value;
     $.post(url+'?data='+JSON.stringify({
-        'username':username, 
+        'username':encrypt(username, password), 
         'action':'login', 
-        'password':password}),
+        'password':hash(password)}),
         response
     );
 }
@@ -315,9 +339,9 @@ function userDataSheetRequest(){
     //var password = document.getElementById("password").value;
 
     $.post(url+'?data='+JSON.stringify({
-        'username':username, 
+        'username':encrypt(username, password), 
         'action':'userDataSheetRequest', 
-        'password':password}),
+        'password':hash(password)}),
         response
     );
      
@@ -327,11 +351,14 @@ function userDataSheetUpdate(){
     //var username = document.getElementById("username").value;
     //var password = document.getElementById("password").value;
 
+    console.log(userDataSheet);
+    var tempDataSheet = userDataSheet;
+    tempDataSheet['diaryEntryList'] = encryptEntries(tempDataSheet['diaryEntryList'], password);
     $.post(url+'?data='+JSON.stringify({
-        'username':username, 
+        'username':encrypt(username, password), 
         'action':'userDataSheetUpdate',  
-        'userDataSheet': userDataSheet,
-        'password':password}),
+        'userDataSheet': tempDataSheet,
+        'password':hash(password)}),
         response
     );
 }
@@ -374,6 +401,8 @@ function userNotFound(){
 }
 
 function setUserDataSheet(response){
+    tempDataSheet = response["userDataSheet"];
+    tempDataSheet['diaryEntryList'] = decryptEntries(tempDataSheet['diaryEntryList'], password);
     userDataSheet = response["userDataSheet"];
     //alert(userDataSheet['username']);
 }

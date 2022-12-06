@@ -86,7 +86,6 @@ app.post('/post', (req, res) => {
 
 }).listen(port);
 console.log("Server is running! (listening on port " + port + ")");
-test();
 
 function initialize(){
 
@@ -107,10 +106,12 @@ function isUserValid(username){
 }
 
 function isPasswordValid(username, password){
-    if(readUserDataSheet(username)["password"] == password){
+    //console.log(readUserDataSheet(username)["password"]);
+    //console.log(password);
+    if(readUserDataSheet(username)["password"] === password){
         return true;
     }
-    return readUserDataSheet(username)["password"];
+    return false;
 }
 
 function getUserList(){
@@ -131,7 +132,7 @@ function updateUserDataSheet(username, userDataSheet){
 function createNewUser(username, password){
     var fs = require('fs');
     try {
-        var newDataSheet = {'username':username, 'password': password, 'diaryEntryList': [{"id": 0, "content":"First Entry"}]};
+        var newDataSheet = {'username':username, 'password': password, 'diaryEntryList': []};
         fs.writeFile('UserData/'+username+'.txt', JSON.stringify(newDataSheet), function (err) {if (err) throw err;console.log('Updated!');});
         console.log("New User Created");
     } catch (err) {
@@ -151,36 +152,4 @@ function readUserDataSheet(username){
         console.log(err);
         return err;
     }
-}
-
-//pass is hashed, in the form of an int
-//content should be string
-function encrypt(content, password){
-    var charArray = Array.from(content)
-    for(var i = 0; i < charArray.length; i++){
-        charArray[i]=password+charArray[i].charCodeAt(0);
-    }
-    return charArray;
-}
-
-//pass is hashed, in the form of an int
-function decrypt(content, password){
-    for(var i = 0; i < content.length; i++){
-        content[i]=String.fromCharCode(content[i]-password);
-    }
-    return content.join("");
-}
-
-//input should be string
-function hash(input){
-    var output = 0;
-    var charArray = Array.from(input)
-    for(var i = 0; i < charArray.length; i++){
-        output+=charArray[i].charCodeAt(0);
-    }
-    return output;
-}
-
-function test(){
-    
 }
