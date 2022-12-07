@@ -1,91 +1,40 @@
-/*
-Web-based diary - css
-EECS1012 - PROJECT
-Authors: CodeFreeze(Erfan, Idil, William and Marwa)
-*/
-
-#main{
+#login{
+    text-align: center;
+    margin: auto;
+}
+#newUser{
+    text-align: center;
+    margin: auto; 
+}
+body{
+    text-align: center;
+    margin: auto;
+    background-color: rgb(218, 211, 211);
+    background-image: linear-gradient(90deg, transparent 50%,
+      rgba(255,255,255,.5) 50%);
+    background-size: 50px 50px; 
+}
+#user{
+    font-family: 'Schoolbell', arial, serif;
+}
+#upperPart{
+    padding: 10px;
+    background-color: lightblue;
+    background-image: linear-gradient(90deg, transparent 50%,
+      rgba(255,255,255,.5) 50%);
+    background-size: 50px 50px; 
+    
+}
+#user{
+    padding: 10px;
     background-color: #beefc4;
     background-image: linear-gradient(90deg, transparent 50%,
       rgba(255,255,255,.5) 50%);
     background-size: 50px 50px; 
 }
-
-#name{
-    text-align: left;
-    color: black;
-    padding-left: 10px;
-}
-#date{
-    color: black;
-    padding-left: 10px;
-}
-#header{
-    border: 3px solid black;
-    background-color: lightblue;
-    font-family: 'Schoolbell', arial, serif;
-}
-#buttons{
-    border: 3px solid black;
-    text-align: left;
-    padding: 10px;
-    background-color: rgb(240, 202, 209);
-}
-#passage{
-    width: 100%;
-    box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    -webkit-box-sizing: border-box;
-    font-family: 'Schoolbell', arial, serif;
-}
-#passage{
-    border: 3px solid black;
-    text-align: left;
-    padding: 10px;
-    font-family: 'Schoolbell', arial, serif;
-    font-size: 25px;
-    background-color: lightyellow;
-}
-#welcome{
-    border: 3px solid black;
-    text-align: left;
-    padding: 10px;
-    font-family: 'Schoolbell', arial, serif;
-    font-size: 25px;
-    background-color: lightblue;
-}
-
-/*functioncal buttons*/
-
-#lock{
-    font-family: 'Schoolbell', arial, serif;
-    font-size: 40px;
+button{
     background-color: white;
 }
-#NightMode{
-    font-family: 'Schoolbell', arial, serif;
-    font-size: 40px;
-    background-color: white;
+textarea{
+    background-color: white; 
 }
-#LightMode{
-    font-family: 'Schoolbell', arial, serif;
-    font-size: 40px;
-    background-color: white;
-}
-/*passage buttons*/
-#add{
-    background-color: white;
-    font-family: 'Schoolbell', arial, serif;
-    font-size: 20px;
-}
-#save{
-    background-color: white;
-    font-family: 'Schoolbell', arial, serif;
-    font-size: 20px;
-}
-#delete{
-    font-family: 'Schoolbell', arial, serif;
-    font-size: 20px;
-    background-color: white;
-}
-    

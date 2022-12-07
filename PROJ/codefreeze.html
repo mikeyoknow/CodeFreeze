@@ -1,30 +1,42 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Login page</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script src="codefreeze.js"></script>
+    <link rel="stylesheet" href="codefreeze.css">
+    <link href = "https://fonts.googleapis.com/css?family=Schoolbell&v1" rel="stylesheet">
+    <title>DIARY</title>
 </head>
-<body onload="chsPswd()">
-<form>
-    <label for="pswd">Enter your password: </label>
-    <input type="password" id="pswd">
-    <input type="button" value="Submit" onclick="checkPswd();" />
-</form>
-<!--Function to check password the already set password is admin-->
-<script type="text/javascript">
-     var confirmPassword;
-    function checkPswd() {
-        var password = document.getElementById("pswd").value;
-        if (password == confirmPassword) {
-             window.location="main.html";
-        }
-        else{
-            alert("Passwords do not match.");
-        }
-    }
-    function chsPswd(){
-            confirmPassword = prompt("Enter your desired password")
-    }
-</script>
+<body onload="Name()">
+
+    <div id="upperPart">
+
+    <h1>HELLO!</h1>
+    <p>Welcome <span id="name"></span></p>
+    <p id="date"></p>
+
+    <button id="lock" onclick="lock()">LOCK</button>
+    
+
+    <script>
+        document.getElementById("date").innerHTML = DATE();
+    </script>
+
+    </div>
+    &nbsp; <!--Adds space in between the two div-->
+    <div id="user">
+
+        <label id="lbl1">Passage #1</label><br>
+        <textarea id="psg1" rows="10" cols="30"></textarea><br>
+
+    </div>
+
+    <button id="save" onclick="save()">SAVE</button>
+    <button id="add" onclick="add()">ADD</button>
+    <button id="delete" onclick="del()">DELETE</button>
+
 </body>
 </html>
